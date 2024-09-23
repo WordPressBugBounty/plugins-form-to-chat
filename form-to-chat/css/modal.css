@@ -1,0 +1,116 @@
+.whatsform-modal {
+    position: fixed;
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    z-index: 100000;
+    display: none;
+    background: rgba(0, 0, 0, 0.6);
+}
+.whatsform-modal.active {
+    display: block;
+}
+.whatsform-modal.active:before {
+    display: block;
+}
+.whatsform-modal .whatsform-modal-dialog {
+    background: transparent;
+    position: absolute;
+    left: 50%;
+    margin-left: -298px;
+    padding-bottom: 30px;
+    top: -100%;
+    z-index: 100001;
+    width: 596px;
+}
+.whatsform-modal.active .whatsform-modal-dialog {
+    top: 10%;
+}
+.whatsform-modal .whatsform-modal-body,
+.whatsform-modal .whatsform-modal-footer {
+    border: 0;
+    background: #fff;
+    padding: 25px 25px 15px;
+}
+.whatsform-modal .whatsform-modal-body {
+    border-bottom: 0;
+}
+.whatsform-modal .whatsform-modal-body p {
+    font-size: 1.3em;
+}
+.whatsform-modal .whatsform-modal-body h2 {
+    font-size: 1.6em;
+    font-weight: bold;
+    margin-top: 0;
+}
+.whatsform-modal .whatsform-modal-footer {
+    border-top: #eeeeee solid 1px;
+    text-align: right;   
+}
+.whatsform-modal .whatsform-modal-footer .button {
+    margin: 0 7px;    
+}
+.whatsform-modal .whatsform-modal-footer .button:first-child {
+    margin: 0;
+}
+.whatsform-modal .whatsform-modal-panel>.notice.inline {
+    margin: 0;
+    display: none;
+}
+.whatsform-modal .whatsform-modal-panel:not(.active) {
+    display: none;
+}
+body.has-whatsform-modal {
+    overflow: hidden;
+}
+.whatsform-modal.whatsform-modal-deactivation-feedback .whatsform-modal-reason-input,
+.whatsform-modal.whatsform-modal-deactivation-feedback .whatsform-modal-internal-message {
+    margin: 3px 0 3px 22px;
+}
+.whatsform-modal.whatsform-modal-deactivation-feedback .whatsform-modal-reason-input input,
+.whatsform-modal.whatsform-modal-deactivation-feedback .whatsform-modal-reason-input textarea,
+.whatsform-modal.whatsform-modal-deactivation-feedback .whatsform-modal-internal-message input,
+.whatsform-modal.whatsform-modal-deactivation-feedback .whatsform-modal-internal-message textarea {
+    width: 100%;
+}
+.whatsform-modal.whatsform-modal-deactivation-feedback li.whatsform-modal-reason.has-internal-message .whatsform-modal-internal-message {
+    border: 1px solid #ccc;
+    padding: 7px;
+    display: none;
+}
+.whatsform-modal.whatsform-modal-deactivation-feedback .whatsform-modal-anonymous-label {
+    padding-top: 15px;
+}
+.whatsform-modal.whatsform-modal-deactivation-feedback .whatsform-modal-panel {
+    margin-top: 0 !important;
+}
+
+
+
+@media (max-width: 650px) {
+    .whatsform-modal .whatsform-modal-dialog {
+        margin-left: -50%;
+        box-sizing: border-box;
+        padding-left: 10px;
+        padding-right: 10px;
+        width: 100%;
+    }
+    .whatsform-modal .whatsform-modal-dialog .whatsform-modal-panel>h3>strong {
+        font-size: 1.3em;
+    }
+    .whatsform-modal.whatsform-modal-deactivation-feedback li.whatsform-modal-reason li.whatsform-modal-reason {
+        margin-bottom: 10px;
+    }
+    .whatsform-modal.whatsform-modal-deactivation-feedback li.whatsform-modal-reason li.whatsform-modal-reason .whatsform-modal-reason-input,
+    .whatsform-modal.whatsform-modal-deactivation-feedback li.whatsform-modal-reason li.whatsform-modal-reason .whatsform-modal-internal-message {
+        margin-left: 29px;
+    }
+    .whatsform-modal.whatsform-modal-deactivation-feedback li.whatsform-modal-reason li.whatsform-modal-reason label {
+        display: table;
+    }
+    .whatsform-modal.whatsform-modal-deactivation-feedback li.whatsform-modal-reason li.whatsform-modal-reason label>span {
+        display: table-cell;
+        font-size: 1.3em;
+    }
+}
