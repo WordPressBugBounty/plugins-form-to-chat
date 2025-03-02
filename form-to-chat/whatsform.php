@@ -1,13 +1,14 @@
 <?php
 
 /**
- * Plugin Name: Form to Chat by WhatsForm
- * Version: 1.1.9
+ * Plugin Name: Form to Chat
+ * Version: 1.2.3
  * Plugin URI: https://whatsform.com/
- * Description: Collect form responses from the customer's WhatsApp number using WhatsForm.
- * Author: Micro.company
+ * Description: Collect form responses from the customer's number.
+ * Author: microcompany
+ * Text Domain: form-to-chat
  * Author URI: https://micro.company/
- * License: GPLv2 or later
+ * License: GPLv3
  */
 
 if (!defined('ABSPATH')) {
@@ -21,7 +22,7 @@ if (is_admin()) {
     if (!function_exists('get_plugin_data')) {
         require_once(ABSPATH . 'wp-admin/includes/plugin.php');
     }
-    $whatsform_active_plugin[$base] = get_plugin_data($wp_plugins_dir . '/' . $base);
+    $whatsform_active_plugin[$base] = get_plugin_data($wp_plugins_dir . '/' . $base, false, false);
 }
 
 define('WHATSFORM_PLUGIN_DIR', str_replace('\\', '/', dirname(__FILE__)));
@@ -49,7 +50,7 @@ add_filter(
 function whatsform_activation_redirect($plugin)
 {
     if ($plugin == plugin_basename(__FILE__)) {
-        exit(wp_redirect(admin_url('admin.php?page=whatsform')));
+        exit(wp_redirect(esc_url_raw(admin_url('admin.php?page=whatsform'))));
     }
 }
 add_action(
@@ -69,10 +70,13 @@ function whatsform_getting_started_notice()
     /* Check that the user hasn't already clicked to ignore the message */
     if (!get_user_meta($user_id, 'whatsform_getting_started_notice') && !(isset($_GET['page']) && $_GET['page'] == 'whatsform')) {
 
-        printf(__('<div class="notice" style="display: flex;flex-direction:column;gap:10px;padding:20px;">
-        <a href="https://whatsform.com/?utm_source=wordpress" class="logo" ><img src="%2$s" width="150px"   alt="whatsform logo"/></a>
+        // translators: %1$s: dismiss link, %2$s: logo image URL
+        printf(
+            wp_kses(
+                __('<div class="notice" style="display: flex;flex-direction:column;gap:10px;padding:20px;">
+        <a href="https://whatsform.com/?utm_source=wordpress" class="logo" ><img src="%2$s" width="220px"   alt="whatsform logo"/></a>
         <div>
-            <h4 style="margin: 0;">Getting started with your WhatsForm 🚀</h4>
+            <h4 style="margin: 0;">Getting started 🚀</h4>
 
             <ol>
                 <li>If you are not an existing WhatsForm user, <a href="https://whatsform.com/?utm_source=wordpress" target="_blank" rel="noreferrer">click here to register.</a></li>
@@ -81,7 +85,33 @@ function whatsform_getting_started_notice()
             </ol>
         </div>
         <a href="%1$s">Dismiss</a>
-    </div>'), '?whatsform_notice_ignore=1', WHATSFORM_DIR_URL . "whatsform-logo.png");
+    </div>', 'form-to-chat'),
+                array(
+                    'div' => array(
+                        'class' => array(),
+                        'style' => array()
+                    ),
+                    'a' => array(
+                        'href' => array(),
+                        'class' => array(),
+                        'target' => array(),
+                        'rel' => array()
+                    ),
+                    'img' => array(
+                        'src' => array(),
+                        'width' => array(),
+                        'alt' => array()
+                    ),
+                    'h4' => array(
+                        'style' => array()
+                    ),
+                    'ol' => array(),
+                    'li' => array()
+                )
+            ), 
+            esc_url('?whatsform_notice_ignore=1'), 
+            esc_url(WHATSFORM_DIR_URL . "whatsform-logo.png")
+        );
     }
 }
 add_action('admin_notices', 'whatsform_getting_started_notice');
@@ -118,7 +148,7 @@ function whatsform_embed_shortcode($atts)
         // add source = wp
         return '<iframe src="' . esc_url("https://whatsform.com/" . $id . "?source=wordpress") . '"  width="' . esc_attr($width) . '" height="' . esc_attr($height) . '" frameBorder="0" allowfullscreen ></iframe>';
     } else {
-        return "⚠ Please enter a valid WhatsForm ID";
+        return esc_html__("⚠ Please enter a valid WhatsForm ID", 'form-to-chat');
     }
 }
 add_shortcode('whatsform', 'whatsform_embed_shortcode');
@@ -232,10 +262,10 @@ function whatsform_settings_template()
 
     $errors = array();
 
-    if (!$is_valid_url && false !== get_option('whatsform_url_input')) array_push($errors, "Invalid WhatsForm URL. Please enter a valid URL of the form <code>https://whatsform.com/&lt;form_id&gt;</code>");
-    if (!$is_valid_title && false !== get_option('whatsform_page_title_input')) array_push($errors, "Please enter a valid page title");
-    if (!$is_valid_path && false !== get_option('whatsform_path_input')) array_push($errors, "Invalid WhatsForm path. Path names can only contain alphabets, digits and the characters <code>-</code> and <code>_</code> ");
-    if (!$page_generated) array_push($errors, "Couldn't generate the WhatsForm page. Are you sure the page doesn't already exist ?");
+    if (!$is_valid_url && false !== get_option('whatsform_url_input')) array_push($errors, esc_html__("Invalid WhatsForm URL. Please enter a valid URL of the form", 'form-to-chat') . ' <code>https://whatsform.com/&lt;form_id&gt;</code>');
+    if (!$is_valid_title && false !== get_option('whatsform_page_title_input')) array_push($errors, esc_html__("Please enter a valid page title", 'form-to-chat'));
+    if (!$is_valid_path && false !== get_option('whatsform_path_input')) array_push($errors, esc_html__("Invalid WhatsForm path. Path names can only contain alphabets, digits and the characters", 'form-to-chat') . ' <code>-</code> ' . esc_html__("and", 'form-to-chat') . ' <code>_</code> ');
+    if (!$page_generated) array_push($errors, esc_html__("Couldn't generate the WhatsForm page. Are you sure the page doesn't already exist?", 'form-to-chat'));
 
 
 
@@ -265,14 +295,46 @@ function whatsform_plugin_settings_init()
     add_settings_section('whatsform-settings-section-embed-widget', '', '', 'whatsform-embed-widget');
 
     add_settings_field('whatsform-widget-snippet', 'WhatsForm Snippet', 'whatsform_widget_snippet_callback', 'whatsform-embed-widget', 'whatsform-settings-section-embed-widget');
-    register_setting('whatsform-settings-embed-widget', 'whatsform_widget_snippet');
+    register_setting('whatsform-settings-embed-widget', 'whatsform_widget_snippet', array(
+        'type' => 'string',
+        'sanitize_callback' => 'whatsform_sanitize_widget_snippet'
+    ));
 
     add_settings_field('whatsform-widget-show-on', 'Show on', 'whatsform_widget_show_on_callback', 'whatsform-embed-widget', 'whatsform-settings-section-embed-widget');
-    register_setting('whatsform-settings-embed-widget', 'whatsform_widget_show_on');
+    register_setting('whatsform-settings-embed-widget', 'whatsform_widget_show_on', array(
+        'type' => 'string',
+        'sanitize_callback' => 'whatsform_sanitize_show_on'
+    ));
 }
 add_action('admin_init', 'whatsform_plugin_settings_init');
 
+/**
+ * Sanitize the widget snippet, allowing limited HTML/script tags needed for the widget
+ */
+function whatsform_sanitize_widget_snippet($input) {
+    return wp_kses(is_string($input) ? $input : '', array(
+        'script' => array(
+            'async' => array(),
+            'src' => array(),
+            'id' => array(),
+            'data-id' => array(),
+            'data-message' => array()
+        )
+    ));
+}
 
+/**
+ * Sanitize the show_on setting to ensure only valid values are allowed
+ */
+function whatsform_sanitize_show_on($input) {
+    $valid_options = array('all', 'home', 'nothome', 'none');
+    
+    if (in_array($input, $valid_options, true)) {
+        return $input;
+    } else {
+        return 'all'; // Default to 'all' if invalid input
+    }
+}
 
 function whatsform_url_callback()
 {
@@ -287,7 +349,7 @@ function whatsform_path_callback()
 
 
 ?> <div style="display:flex;flex-wrap:wrap;"> <code style="display:flex;flex-direction:column;justify-content:center;border:1px solid gray;border-right:0;margin:0;">
-            <div><?php echo get_site_url(); ?>/</div>
+            <div><?php echo esc_url(get_site_url()); ?>/</div>
         </code>
         <input name="whatsform_path_input" class="regular-text" id="whatsform_path_input" type="text" style="max-width:147px;margin:0;" placeholder="whatsform" value="<?php echo esc_attr(get_option('whatsform_path_input') === false ? 'whatsform' : get_option('whatsform_path_input'));  ?>" />
     </div>
@@ -297,7 +359,7 @@ function whatsform_path_callback()
 function whatsform_page_title_callback()
 {
 ?>
-    <input name="whatsform_page_title_input" class="regular-text" type="text" style="margin:0" placeholder="Page title" value="<?php echo (get_option('whatsform_page_title_input') === false ? '' : esc_attr(get_option('whatsform_page_title_input'))); ?>" />
+    <input name="whatsform_page_title_input" class="regular-text" type="text" style="margin:0" placeholder="<?php echo esc_attr__('Page title', 'form-to-chat'); ?>" value="<?php echo (get_option('whatsform_page_title_input') === false ? '' : esc_attr(get_option('whatsform_page_title_input'))); ?>" />
 <?php
 }
 
@@ -305,10 +367,13 @@ function whatsform_widget_snippet_callback()
 {
 
 ?>
-    <textarea name="whatsform_widget_snippet" id="whatsform_widget_snippet" rows="5" cols="30" style="width:400px;font-family:monospace;font-size:small;" <?php disabled(!current_user_can( 'unfiltered_html') ); ?>><?php echo wp_kses(get_option('whatsform_widget_snippet') === false ? '' : get_option('whatsform_widget_snippet'), array('script' => array('async' => array(), 'src' => array(), 'id' => array(), 'data-id' => array(), 'data-message' => array())));  ?></textarea>
+    <textarea name="whatsform_widget_snippet" id="whatsform_widget_snippet" rows="5" cols="30" style="width:400px;font-family:monospace;font-size:small;" <?php disabled(!current_user_can( 'unfiltered_html') ); ?>><?php 
+        $widget_snippet = get_option('whatsform_widget_snippet');
+        echo wp_kses($widget_snippet === false ? '' : (is_string($widget_snippet) ? $widget_snippet : ''), array('script' => array('async' => array(), 'src' => array(), 'id' => array(), 'data-id' => array(), 'data-message' => array())));  
+    ?></textarea>
     <?php
         if(!current_user_can( 'unfiltered_html' )) {
-              echo '<p style="color:#ffc107"><b>Note:</b> ' . __('You do not have permission to add or edit scripts. Please contact your administrator.', 'whatsform') . '</p>';
+              echo '<p style="color:#ffc107"><b>Note:</b> ' . esc_html__('You do not have permission to add or edit scripts. Please contact your administrator.', 'form-to-chat') . '</p>';
         }
     ?>
 <?php
@@ -319,10 +384,10 @@ function whatsform_widget_show_on_callback()
     $showOn = get_option('whatsform_widget_show_on') === false ? 'all' : get_option('whatsform_widget_show_on');
 ?>
 
-    <input type="radio" name="whatsform_widget_show_on" value="all" id="all" <?php checked('all', $showOn); ?> <?php disabled(!current_user_can( 'unfiltered_html') ); ?>> <label class="whatsform-plugin-label" for="all"><?php _e('Everywhere'); ?> </label><br />
-    <input type="radio" name="whatsform_widget_show_on" value="home" id="home" <?php checked('home', $showOn); ?> <?php disabled(!current_user_can( 'unfiltered_html') ); ?>> <label class="whatsform-plugin-label" for="home"><?php _e('Homepage Only'); ?> </label><br />
-    <input type="radio" name="whatsform_widget_show_on" value="nothome" id="nothome" <?php checked('nothome', $showOn); ?> <?php disabled(!current_user_can( 'unfiltered_html') ); ?>> <label class="whatsform-plugin-label" for="nothome"><?php _e('Everywhere except Home'); ?> </label><br />
-    <input type="radio" name="whatsform_widget_show_on" value="none" id="none" <?php checked('none', $showOn); ?> <?php disabled(!current_user_can( 'unfiltered_html') ); ?>> <label class="whatsform-plugin-label" for="none"><?php _e('Nowhere'); ?> </label>
+    <input type="radio" name="whatsform_widget_show_on" value="all" id="all" <?php checked('all', $showOn); ?> <?php disabled(!current_user_can( 'unfiltered_html') ); ?>> <label class="whatsform-plugin-label" for="all"><?php esc_html_e('Everywhere', 'form-to-chat'); ?> </label><br />
+    <input type="radio" name="whatsform_widget_show_on" value="home" id="home" <?php checked('home', $showOn); ?> <?php disabled(!current_user_can( 'unfiltered_html') ); ?>> <label class="whatsform-plugin-label" for="home"><?php esc_html_e('Homepage Only', 'form-to-chat'); ?> </label><br />
+    <input type="radio" name="whatsform_widget_show_on" value="nothome" id="nothome" <?php checked('nothome', $showOn); ?> <?php disabled(!current_user_can( 'unfiltered_html') ); ?>> <label class="whatsform-plugin-label" for="nothome"><?php esc_html_e('Everywhere except Home', 'form-to-chat'); ?> </label><br />
+    <input type="radio" name="whatsform_widget_show_on" value="none" id="none" <?php checked('none', $showOn); ?> <?php disabled(!current_user_can( 'unfiltered_html') ); ?>> <label class="whatsform-plugin-label" for="none"><?php esc_html_e('Nowhere', 'form-to-chat'); ?> </label>
 <?php
 }
 
@@ -396,10 +461,10 @@ function whatsform_wp_head()
     $widget_show_on = get_option('whatsform_widget_show_on');
 
     if ($whatsform_inpost_snippet && $whatsform_inpost_snippet != '' && !is_home() && !is_front_page()) {
-        echo wp_kses($whatsform_inpost_snippet, array('script' => array('async' => array(), 'src' => array(), 'id' => array(), 'data-id' => array(), 'data-message' => array())));
+        echo wp_kses(is_string($whatsform_inpost_snippet) ? $whatsform_inpost_snippet : '', array('script' => array('async' => array(), 'src' => array(), 'id' => array(), 'data-id' => array(), 'data-message' => array())));
     } elseif ($widget_snippet && $widget_show_on) {
         if (($widget_show_on === 'all') || ($widget_show_on === 'home' && (is_home() || is_front_page())) || ($widget_show_on === 'nothome' && !is_home() && !is_front_page())) {
-            echo wp_kses($widget_snippet, array('script' => array('async' => array(), 'src' => array(), 'id' => array(), 'data-id' => array(), 'data-message' => array())));
+            echo wp_kses(is_string($widget_snippet) ? $widget_snippet : '', array('script' => array('async' => array(), 'src' => array(), 'id' => array(), 'data-id' => array(), 'data-message' => array())));
         }
     }
 }
