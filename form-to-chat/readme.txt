@@ -3,8 +3,8 @@ Contributors: microcompany
 Tags: whatsapp form, click to chat
 Requires at least: 4.5
 Requires PHP: 5.5
-Tested up to: 6.7.2
-Stable tag: 1.2.3
+Tested up to: 6.8.2
+Stable tag: 1.2.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -226,7 +226,110 @@ Note: This plugin requires an active WhatsForm.com account to function. While ba
 = 1.1.3 =
 * Bug fixes & improvements.
 
+= 1.1.4 =
+* Support WordPress 6.2
+
+= 1.1.5 =
+* Support WordPress 6.3
+
+= 1.1.6 =
+* Support WordPress 6.4
+
+= 1.1.7 =
+* Fixed security issues
+
+= 1.1.8 =
+* Fixed security issues
+
+= 1.1.9 =
+* Support WordPress 6.5
+
+= 1.2.0 =
+* Support WordPress 6.7.1
+* Updated plugin descriptions
+
+= 1.2.1 =
+* Security fixes
+* Support WordPress 6.7.2
+
+= 1.2.2 =
+* Security fixes
+
+= 1.2.3 =
+* Logo icon update
+
+= 1.2.4 =
+* Support WordPress 6.8.2
+
 == Upgrade Notice ==
+
+= 1.0.0 =
+1.0.0 is the initial version.
+
+= 1.0.1 =
+* Bug fixes & improvements. 
+
+= 1.0.2 =
+* Bug fixes & improvements. 
+
+= 1.0.4 =
+* Minor text changes. 
+
+= 1.0.5 =
+* Support WordPress 6.0
+
+= 1.0.8 =
+* Bug fixes & improvements.
+
+= 1.0.9 =
+* Bug fixes & improvements.
+
+= 1.1.0 =
+* Support WordPress 6.0.2
+
+= 1.1.1 =
+* Support WordPress 6.1
+
+= 1.1.2 =
+* Support for new snippet
+
+= 1.1.3 =
+* Bug fixes & improvements.
+
+= 1.1.4 =
+* Support WordPress 6.2
+
+= 1.1.5 =
+* Support WordPress 6.3
+
+= 1.1.6 =
+* Support WordPress 6.4
+
+= 1.1.7 =
+* Fixed security issues
+
+= 1.1.8 =
+* Fixed security issues
+
+= 1.1.9 =
+* Support WordPress 6.5
+
+= 1.2.0 =
+* Support WordPress 6.7.1
+* Updated plugin descriptions
+
+= 1.2.1 =
+* Security fixes
+* Support WordPress 6.7.2
+
+= 1.2.2 =
+* Security fixes
+
+= 1.2.3 =
+* Logo icon update
+
+= 1.2.4 =
+* Support WordPress 6.8.2
 
 = 1.0.0 =
 1.0.0 is the initial version.
@@ -292,3 +395,6 @@ Note: This plugin requires an active WhatsForm.com account to function. While ba
 
 = 1.2.3 =
 * Logo icon update
+
+= 1.2.4 =
+* Support WordPress 6.8.2

@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name: Form to Chat
- * Version: 1.2.3
+ * Version: 1.2.4   
  * Plugin URI: https://whatsform.com/
  * Description: Collect form responses from the customer's number.
  * Author: microcompany
