@@ -3,12 +3,12 @@ Contributors: microcompany
 Tags: whatsapp form, click to chat
 Requires at least: 4.5
 Requires PHP: 5.5
-Tested up to: 6.8.2
-Stable tag: 1.2.4
+Tested up to: 6.9
+Stable tag: 1.2.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Add a beautiful form widget & receive responses from customers on chat apps.
+Add a beautiful form widget & receive responses from customers on chat apps like WhatsApp.
 
 == Description ==
 
@@ -261,6 +261,12 @@ Note: This plugin requires an active WhatsForm.com account to function. While ba
 = 1.2.4 =
 * Support WordPress 6.8.2
 
+= 1.2.5 =
+* Support WordPress 6.9
+
+= 1.2.5 =
+* Support WordPress 6.9
+
 == Upgrade Notice ==
 
 = 1.0.0 =
@@ -331,6 +337,12 @@ Note: This plugin requires an active WhatsForm.com account to function. While ba
 = 1.2.4 =
 * Support WordPress 6.8.2
 
+= 1.2.5 =
+* Support WordPress 6.9
+
+= 1.2.5 =
+* Support WordPress 6.9
+
 = 1.0.0 =
 1.0.0 is the initial version.
 
@@ -398,3 +410,6 @@ Note: This plugin requires an active WhatsForm.com account to function. While ba
 
 = 1.2.4 =
 * Support WordPress 6.8.2
+
+= 1.2.5 =
+* Support WordPress 6.9
